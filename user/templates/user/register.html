@@ -1,0 +1,65 @@
+{% extends 'user/main_nav.html' %}
+{% load static %}
+{% block title %}Register{% endblock %}
+{% block main %}
+{% if messages %}
+{% for message in messages %}
+<div class="messages">
+    <p class="alert {{message.tags}}" style="margin: 1rem; margin-top: 4rem;">{{message}}</p>
+</div>
+{% endfor %}
+{% endif%}
+    <div class="conatiner mt-5 ms-5">
+        <img class="mt-3 ms-5" src="{% static 'img/login.jpg' %}" alt="" height="95%" width="">
+    </div>
+    <form action="{% url 'register' %}" method="post" novalidate>
+        {% csrf_token %}
+        <div class="position-absolute top-50 start-50 translate-middle-y mt-5">
+            <h3>Register</h3>
+            <div class="form-group row w-75 p-4  border border-dark rounded">
+                <div class="row">
+                    <div class="col">
+                        <label for="first_name">First Name *</label>
+                        <input type="text" class="form-control" name="first_name" required>
+                    </div>
+                    <div class="col">
+                        <label for="last_name">Last Name *</label>
+                        <input type="text" class="form-control" name="last_name" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="username">Email *</label>
+                        <input type="email" class="form-control" name="username" required>
+                    </div>
+                </div>
+                <label for="password1">Password *</label>
+                <input type="password" class="form-control" name="password1" required>
+                <label for="password2">Re-Enter Password *</label>
+                <input type="password" class="form-control" name="password2" required>
+                <label for="ucourse">Enter your Course *</label>
+                <select name="ucourse" id="ucourse" class="form-select">
+                    {% for course in courses %}
+                        <option value="{{course.id}}">{{course}}</option>
+                    {% endfor %}
+                </select>
+                <label for="ucollege">Enter your college *</label>
+                <select name="ucollege" id="ucollege" class="form-select">
+                    {% for college in colleges %}
+                        <option value="{{college.id}}">{{college}}</option>
+                    {% endfor %}
+                </select>
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <p class="alert alert-danger">{{field.label}} {{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+                <span>Couldn't find your <a href="{% url 'addcollege' %}">College</a> or <a href="{% url 'addcourse' %}">Course</a></span>
+                <span>Already have a account? <a href="{% url 'login' %}">Login</a></span>
+                <button type="submit" class="btn btn-primary mt-2">Register</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
